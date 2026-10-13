@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080b18">
+
+<title>For You — A Little Memory</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow: hidden;
+  background: #080b18;
+  color: white;
+  font-family: Georgia, serif;
+}
+
+.background {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(5, 8, 22, 0.18),
+      rgba(5, 8, 22, 0.60),
+      #080b18
+    ),
+    url("https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?auto=format&fit=crop&w=1600&q=85")
+    center / cover no-repeat;
+  transform: scale(1.04);
+  animation: breathe 18s ease-in-out infinite alternate;
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 0%,
+    rgba(3, 6, 20, 0.25) 60%,
+    rgba(3, 6, 20, 0.75) 100%
+  );
+}
+
+@keyframes breathe {
+  from { transform: scale(1.04); }
+  to   { transform: scale(1.13); }
+}
+
+main {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 28px;
+  text-align: center;
+}
+
+.label {
+  color: #b9c9f6;
+  font-family: Arial, sans-serif;
+  font-size: 11px;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  margin-bottom: 34px;
+  opacity: 0.85;
+}
+
+h1 {
+  font-size: clamp(34px, 9vw, 58px);
+  font-weight: normal;
+  font-style: italic;
+  color: #f4f3ff;
+  text-shadow: 0 0 30px rgba(163, 190, 255, 0.4);
+  margin-bottom: 42px;
+}
+
+.lyric-box {
+  width: 100%;
+  max-width: 650px;
+  min-height: 130px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#lyric {
+  color: #e6edff;
+  font-size: clamp(22px, 5.5vw, 34px);
+  line-height: 1.7;
+  font-style: italic;
+  text-shadow:
+    0 0 12px rgba(167, 197, 255, 0.6),
+    0 0 35px rgba(167, 197, 255, 0.25);
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity 650ms ease,
+    transform 650ms ease;
+}
+
+#lyric.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.line {
+  width: 45px;
+  height: 1px;
+  margin-top: 35px;
+  background: #a8bff8;
+  box-shadow: 0 0 12px #a8bff8;
+  opacity: 0.7;
+}
+
+.footer {
+  position: fixed;
+  bottom: 25px;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  color: #aab5d0;
+  font-family: Arial, sans-serif;
+  font-size: 10px;
+  letter-spacing: 3px;
+  opacity: 0.65;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="background"></div>
+<div class="overlay"></div>
+
+<main>
+  <div class="label">a little piece of my heart</div>
+
+  <h1>For You.</h1>
+
+  <div class="lyric-box">
+    <div id="lyric" aria-live="polite"></div>
+  </div>
+
+  <div class="line"></div>
+</main>
+
+<div class="footer">SOME MEMORIES NEVER FADE</div>
+
+<script>
+"use strict";
+
+// Ganti teks contoh dengan tulisan orisinal milikmu.
+// duration menggunakan satuan milidetik.
+// 1000 milidetik = 1 detik.
+
+const lines = [
+  {
+    text: "Somewhere beneath the quiet sky,",
+    duration: 3000
+  },
+  {
+    text: "there is a thought of you and I.",
+    duration: 3500
+  },
+  {
+    text: "The world moves on, the stars remain,",
+    duration: 3500
+  },
+  {
+    text: "some memories return like rain.",
+    duration: 4000
+  },
+  {
+    text: "And if these words could reach your heart,",
+    duration: 3500
+  },
+  {
+    text: "perhaps we'd never feel so far apart.",
+    duration: 4500
+  }
+];
+
+const lyric = document.getElementById("lyric");
+
+let index = 0;
+let timer = null;
+let transitionTimer = null;
+
+function showLine() {
+  lyric.classList.remove("show");
+
+  transitionTimer = setTimeout(() => {
+    lyric.textContent = lines[index].text;
+    lyric.classList.add("show");
+
+    const duration = lines[index].duration;
+    index = (index + 1) % lines.length;
+
+    timer = setTimeout(showLine, duration);
+  }, 650);
+}
+
+showLine();
+</script>
+
+</body>
+</html>
